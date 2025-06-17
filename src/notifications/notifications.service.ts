@@ -10,6 +10,15 @@ export class NotificationsService {
     this.novu = new Novu("635fa0d994282ddc7b10735c6f32b7d9"); // API key de Novu
   }
 
+  async getNotificationsForUser(userId: string) {
+    try {
+      const notifications = await this.novu.subscribers.getFeed(userId);
+      return notifications;
+    } catch (error) {
+      throw new Error(`Error obteniendo notificaciones para ${userId}: ${error.message}`);
+    }
+  }
+
   async sendWelcomeNotification(userId: string) {
     try {
       await this.novu.trigger("welcome-template", {
